@@ -47,8 +47,6 @@ fastify.register(require('./routes/AuthRouter'), {prefix: '/auth'});
 
 // ? User Router
 fastify.register(require('./routes/UserRouter'), {prefix: '/user'});
-// ? User Router
-fastify.register(require('./routes/CategoriesRouter'), {prefix: '/categories'});
 
 // ? Error Listener
 fastify.setErrorHandler((error, req, res) => {
