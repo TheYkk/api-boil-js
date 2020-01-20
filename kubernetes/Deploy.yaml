@@ -1,0 +1,45 @@
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: send-notification
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: send-notification
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 30%
+    template:
+      metadata:
+        labels:
+          app: send-notification
+      spec:
+        terminationGracePeriodSeconds: 5
+        containers:
+        - name: server
+          image: {{IMAGE}}
+          command: ["sh", "-c", "touch /tmp/healthy"]
+          envFrom:
+            - secretRef:
+              name: send-notification-secret
+            - configMapRef:
+              name: send-notification-configmap
+          readinessProbe:
+            exec:
+              command:
+              - cat
+              - /tmp/healthy
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+

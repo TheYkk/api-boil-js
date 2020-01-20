@@ -1,0 +1,69 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ykk}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+    - "5432:5432"
+    networks:
+      - api
+    restart: unless-stopped
+  migration:
+    container_name: backend-migration
+    build:
+      dockerfile: migration.Dockerfile
+      context: ./
+    env_file: ./.env
+    networks:
+      - api
+  api:
+    container_name: backend-api
+    restart: always
+    build: ./
+    env_file: ./.env
+    networks:
+      - api
+    ports:
+      - "443:443"
+      - "8443:8443"
+      - "8080:8080"
+      - "80:80"
+    # volumes:
+    #   - .:/app
+  redis:
+    image: redis:5.0-alpine
+    command: redis-server --requirepass ykk
+    ports:
+    - "6379:6379"
+    restart: always
+    networks:
+      - api
+    volumes:
+      - redis:/data
+  rabbitmq:
+    image: 'rabbitmq:3.8-management'
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+networks:
+  api:
+    driver: bridge
+
+volumes:
+  postgres:
+  redis:
+  rabbitmq_data:
