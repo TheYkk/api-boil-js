@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ykk}
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - saaspostgres:/data/postgres
     ports:
     - "5432:5432"
     networks:
@@ -64,6 +64,6 @@ networks:
     driver: bridge
 
 volumes:
-  postgres:
+  saaspostgres:
   redis:
   rabbitmq_data:
