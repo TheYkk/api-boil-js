@@ -1,5 +1,7 @@
 // ? Set envs from .env file
-require('dotenv').config({path: `.env.${process.env.NODE_ENV}`});
+require('dotenv').config({
+  path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env',
+});
 // ? Convert different types
 const convert = {
   string(value) {
