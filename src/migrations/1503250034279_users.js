@@ -7,8 +7,7 @@ exports.up = function(knex, Promise) {
       .unique(); // ? User unique email
     table.string('password', 254).notNullable(); // ? User password with crypted password
 
-    table.string('first_name'); // ? User name
-    table.string('last_name'); // ? User lastname
+    table.string('name'); // ? User name
     table.string('lang'); // ? User language
     table.string('email_code'); // ? Uniq 6 char code for email validation
     table.integer('status').defaultTo(0); // ? User status example (0: Disabled , 1: Active , 2: Banned , 3: Confirmed )
