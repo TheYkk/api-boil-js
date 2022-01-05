@@ -47,8 +47,7 @@ module.exports = (fastify, _opts, next) => {
           req.log.error(`User already found`);
 
           res.send({
-            error: true,
-            desc: 'User already found',
+            error: 'User already found',
           });
         } else {
           const hashedPassword = bcrypt.hashSync(password, 5);
@@ -143,8 +142,7 @@ module.exports = (fastify, _opts, next) => {
             req.log.debug(`User not found : ${email}`);
 
             res.send({
-              error: true,
-              desc: 'Email or Password not match',
+              error: 'Email or Password not match',
               fields: ['email', 'password'],
             });
           } else {
@@ -174,8 +172,7 @@ module.exports = (fastify, _opts, next) => {
                     return true;
                   });
                 res.send({
-                  error: true,
-                  desc: 'Email or Password not match',
+                  error: 'Email or Password not match',
                   fields: ['email', 'password'],
                 });
               }
@@ -208,8 +205,7 @@ module.exports = (fastify, _opts, next) => {
             req.log.error(`User not found , code ${code} , id ${user.id}`);
 
             res.send({
-              error: true,
-              desc: 'User not found',
+              error: 'User not found',
             });
           }
 
@@ -227,13 +223,11 @@ module.exports = (fastify, _opts, next) => {
             }
 
             res.send({
-              error: true,
-              desc: 'Sended code is false',
+              error: 'Sended code is false',
             });
           } else {
             res.send({
-              error: true,
-              desc: 'User already activated or banned',
+              error:'User already activated or banned',
             });
           }
         })
